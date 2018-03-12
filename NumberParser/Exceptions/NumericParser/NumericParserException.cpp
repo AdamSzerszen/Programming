@@ -1,5 +1,5 @@
 //
-// Created by owaat on 12.03.2018.
+// Created by Adam Szerszeń on 12.03.2018.
 //
 
 #include "NumericParserException.h"
