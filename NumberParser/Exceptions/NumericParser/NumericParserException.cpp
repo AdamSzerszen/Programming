@@ -9,6 +9,6 @@ NumericParserException::NumericParserException(char const *const message) throw(
 
 }
 
-char const *NumericParserException::what() const {
+char const *NumericParserException::what() const throw() {
     return runtime_error::what();
 }

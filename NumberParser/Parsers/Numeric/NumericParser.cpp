@@ -5,8 +5,41 @@
 #include "NumericParser.h"
 #include "../../Exceptions/NumericParser/NumericParserException.h"
 
-int NumericParser::RomanToArab(string roman) {
+const string NumericParser::ROMAN_SIGNS[] =
+        {"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
+const int NumericParser::ROMAN_VALUES[] =
+        {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+const int NumericParser::AVAILABLE_ASCII[] =
+        {73, 105, 86, 118, 88, 120, 76, 108, 77, 109, 67, 99, 68, 100};
 
+int NumericParser::RomanToArab(string roman) throw() {
+    bool containsOnlyRomanSigns = includeOnlyRomanSigns(roman);
+    if (!containsOnlyRomanSigns) {
+        throw NumericParserException("Input contains not correct signs!");
+    }
+    int availableAsciiCount = sizeof(AVAILABLE_ASCII) / sizeof(int);
+    int romanSignsSum = sumUpRomanSigns(roman, availableAsciiCount);
+
+    bool isInRomanNumberRange(romanSignsSum);
+    if (!isInRomanNumberRange) {
+        throw NumericParserException("Input out of range!");
+    }
+
+    string correctRoman = parseArabToRoman(romanSignsSum);
+    if (roman.compare(correctRoman) != 0) {
+        throw NumericParserException("Input not in correct roman order!");
+    }
+
+    return romanSignsSum;
+}
+
+string NumericParser::ArabToRoman(int arab) throw() {
+    bool isInRomanNumberRange(arab);
+    if (!isInRomanNumberRange) {
+        throw NumericParserException("Input out of range!");
+    }
+
+    return parseArabToRoman(arab);
 }
 
 bool NumericParser::includeOnlyRomanSigns(string roman) {
@@ -35,27 +68,6 @@ bool NumericParser::isInRomanNumberRange(int arab) {
     return arab > 0 && arab < 4000;
 }
 
-int NumericParser::parseRomanToArab(string roman) {
-    bool containsOnlyRomanSigns = includeOnlyRomanSigns(roman);
-    if (!containsOnlyRomanSigns) {
-        throw NumericParserException("Input contains not correct signs!");
-    }
-    int availableAsciiCount = sizeof(AVAILABLE_ASCII) / sizeof(int);
-    int romanSignsSum = sumUpRomanSigns(roman, availableAsciiCount);
-
-    bool isInRomanNumberRange(romanSignsSum);
-    if (!isInRomanNumberRange) {
-        throw NumericParserException("Input out of range!");
-    }
-
-    string correctRoman = parseArabToRoman(romanSignsSum);
-    if (roman.compare(correctRoman) != 0) {
-        throw NumericParserException("Input not in correct roman order!");
-    }
-
-    return romanSignsSum;
-}
-
 string NumericParser::parseArabToRoman(int arab) {
     string roman = "";
     int availableAsciiCount = sizeof(AVAILABLE_ASCII) / sizeof(int);
@@ -72,23 +84,17 @@ string NumericParser::parseArabToRoman(int arab) {
     return roman;
 }
 
-string NumericParser::ArabToRoman(int arab) {
-    bool isInRomanNumberRange(arab);
-    if (!isInRomanNumberRange) {
-        throw NumericParserException("Input out of range!");
-    }
-
-    return parseArabToRoman(arab);
-}
 
 int NumericParser::sumUpRomanSigns(string roman, int availableAsciiCount) {
     int sum = 0;
+    string tempRoman = roman;
 
-    while (roman.size() > 0) {
+    while (tempRoman.size() > 0) {
         for (int i = availableAsciiCount - 1; i >= 0; --i) {
-            if (roman.find(AVAILABLE_ASCII[i]) == 0) {
+            string currentSign = ROMAN_SIGNS[i];
+            if (tempRoman.find(currentSign) == 0) {
                 sum += ROMAN_VALUES[i];
-                roman.erase(AVAILABLE_ASCII[i]);
+                tempRoman = tempRoman.substr((currentSign.size() - 1), tempRoman.size());
                 break;
             }
         }
