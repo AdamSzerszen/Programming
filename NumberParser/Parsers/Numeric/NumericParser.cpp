@@ -40,15 +40,59 @@ int NumericParser::parseRomanToArab(string roman) {
     if (!containsOnlyRomanSigns) {
         throw NumericParserException("Input contains not correct signs!");
     }
+    int availableAsciiCount = sizeof(AVAILABLE_ASCII) / sizeof(int);
+    int romanSignsSum = sumUpRomanSigns(roman, availableAsciiCount);
 
-    //TODO: finish this method
-    return 0;
+    bool isInRomanNumberRange(romanSignsSum);
+    if (!isInRomanNumberRange) {
+        throw NumericParserException("Input out of range!");
+    }
+
+    string correctRoman = parseArabToRoman(romanSignsSum);
+    if (roman.compare(correctRoman) != 0) {
+        throw NumericParserException("Input not in correct roman order!");
+    }
+
+    return romanSignsSum;
 }
 
 string NumericParser::parseArabToRoman(int arab) {
-    return std::__cxx11::string();
+    string roman = "";
+    int availableAsciiCount = sizeof(AVAILABLE_ASCII) / sizeof(int);
+    while (arab > 0) {
+        for (int i = availableAsciiCount - 1; i >= 0; --i) {
+            if (arab - ROMAN_VALUES[i] >= 0) {
+                roman += AVAILABLE_ASCII[i];
+                arab -= ROMAN_VALUES[i];
+                break;
+            }
+        }
+    }
+
+    return roman;
 }
 
 string NumericParser::ArabToRoman(int arab) {
-    return std::__cxx11::string();
+    bool isInRomanNumberRange(arab);
+    if (!isInRomanNumberRange) {
+        throw NumericParserException("Input out of range!");
+    }
+
+    return parseArabToRoman(arab);
+}
+
+int NumericParser::sumUpRomanSigns(string roman, int availableAsciiCount) {
+    int sum = 0;
+
+    while (roman.size() > 0) {
+        for (int i = availableAsciiCount - 1; i >= 0; --i) {
+            if (roman.find(AVAILABLE_ASCII[i]) == 0) {
+                sum += ROMAN_VALUES[i];
+                roman.erase(AVAILABLE_ASCII[i]);
+                break;
+            }
+        }
+    }
+
+    return sum;
 }

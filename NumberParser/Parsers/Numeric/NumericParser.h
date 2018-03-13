@@ -13,6 +13,8 @@ class NumericParser {
 private:
     static const string ROMAN_SIGNS[] =
             {"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
+    static const int ROMAN_VALUES[] =
+            {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
     static const int AVAILABLE_ASCII[] =
             {73, 105, 86, 118, 88, 120, 76, 108, 77, 109, 67, 99, 68, 100};
 
@@ -25,6 +27,8 @@ private:
     static string parseArabToRoman(int arab);
 
     static bool isCorrectAscii(int currentChar, int availableAsciiCount);
+
+    static int sumUpRomanSigns(string roman, int availableAsciiCount);
 
 public:
     static int RomanToArab(string roman) throw();
