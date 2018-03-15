@@ -14,12 +14,22 @@ using std::unique_ptr;
 
 class NumericService {
 private:
-    unique_ptr<vector<unique_ptr>> availableNumbers;
+    vector<unique_ptr<Number>> availableNumbers;
 
-    unique_ptr<Number> createNumber(string sign, int number, int value);
+    unique_ptr<Number> createNumber(string sign, int value);
 
 public:
     NumericService();
+
+    bool ContainsOnlyRomanSigns(string roman);
+
+    bool CorrectRomanRange(int arab);
+
+    string ParseArabToRoman(int arab);
+
+    bool CorrectAscii(int currentChar);
+
+    int SumUpRomanSigns(string roman);
 };
 
 

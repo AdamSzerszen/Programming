@@ -6,29 +6,16 @@
 #define NUMBERPARSER_NUMERICPARSER_H
 
 #include <string>
+#include "../../Services/Numeric/NumericService.h"
+#include "../../Exceptions/NumericParser/NumericParserException.h"
 
 using std::string;
 
 class NumericParser {
-private:
-    static const string ROMAN_SIGNS[];
-    static const int ROMAN_VALUES[];
-    static const int AVAILABLE_ASCII[];
-
-    static bool includeOnlyRomanSigns(string roman);
-
-    static bool isInRomanNumberRange(int arab);
-
-    static string parseArabToRoman(int arab);
-
-    static bool isCorrectAscii(int currentChar, int availableAsciiCount);
-
-    static int sumUpRomanSigns(string roman, int availableAsciiCount);
-
 public:
-    static int RomanToArab(string roman) throw();
+    static int RomanToArab(string roman) throw(NumericParserException);
 
-    static string ArabToRoman(int arab) throw();
+    static string ArabToRoman(int arab) throw(NumericParserException);
 };
 
 

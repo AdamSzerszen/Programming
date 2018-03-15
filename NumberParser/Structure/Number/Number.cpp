@@ -4,16 +4,12 @@
 
 #include "Number.h"
 
-Number::Number(string sign, int number, int value) :
-        romanSign(sign), numberValue(value), asciiNumber(number) {
+Number::Number(string sign, int value) :
+        romanSign(sign), numberValue(value) {
 }
 
 string Number::RomanSign() const {
     return romanSign;
-}
-
-int Number::AsciiNumber() const {
-    return asciiNumber;
 }
 
 int Number::NumberValue() const {
